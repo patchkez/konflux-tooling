@@ -30,6 +30,12 @@ if [ $SUB ];then
   subscription-manager refresh
 fi
 
+if [ $SUB ]; then
+  echo '=== Enable repositories ==='
+  subscription-manager repos --enable=rhel-9-for-x86_64-appstream-source-rpms
+  subscription-manager repos --enable=rhel-9-for-x86_64-baseos-source-rpms
+fi
+
 echo "=== Looping through repo files ==="
 for REPOFILE in `cat rpms.in.yaml | yq '.contentOrigin.repofiles.[]'`;do
   REPOFILE_PATH="/etc/yum.repos.d/$(basename ${REPOFILE})"

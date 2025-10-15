@@ -16,5 +16,9 @@ Run container for generation of rpm.lock.yaml:
 ```
 podman run --rm -e KEY_NAME=${KEY_NAME} -e ORG_ID=${ORG_ID} -v $(pwd):/app/:Z localhost/rpm-lockfile-prototype
 ```
+
+Note: Watch out for any WARNINGS as they might be related to not enabled repositories.
+
 ## TODO
 - print enabled repos
+- make enabling of additional repos configurable (hardcoded rhel-9-for-x86_64-baseos-source-rpms / rhel-9-for-x86_64-appstream-source-rpms)
