@@ -50,7 +50,7 @@ for REPOFILE in `cat rpms.in.yaml | yq '.contentOrigin.repofiles.[]'`;do
 done
 
 echo '=== Running rpm-lockfile-prototype ==='
-/usr/local/bin/rpm-lockfile-prototype --outfile=./rpms.lock.yaml ./rpms.in.yaml
+/usr/local/bin/rpm-lockfile-prototype --outfile=./rpms.lock.yaml ./rpms.in.yaml --image=registry.access.redhat.com/ubi9/ubi-minimal:latest
 
 echo '=== replacing sslclientky/sslclientcert with variables for konflux ==='
 for REPOFILE in `ls -1 *.repo`;do

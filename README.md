@@ -22,3 +22,4 @@ Note: Watch out for any WARNINGS as they might be related to not enabled reposit
 ## TODO
 - print enabled repos
 - make enabling of additional repos configurable (hardcoded rhel-9-for-x86_64-baseos-source-rpms / rhel-9-for-x86_64-appstream-source-rpms)
+- make --image option configurable
