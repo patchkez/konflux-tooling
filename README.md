@@ -19,7 +19,7 @@ export ORG_ID=<org-id>
 
 Run container for generation of rpm.lock.yaml:
 ```
-podman run --rm -e KEY_NAME=${KEY_NAME} -e ORG_ID=${ORG_ID} -v $(pwd):/app/:Z quay.io/patchkez101/konflux-tooling:latest
+podman run --rm -e KEY_NAME -e ORG_ID -v $(pwd):/app/:Z quay.io/patchkez101/konflux-tooling:latest
 ```
 
 Note: Watch out for any WARNINGS as they might be related to not enabled repositories.
