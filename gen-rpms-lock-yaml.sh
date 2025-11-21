@@ -22,11 +22,6 @@ if [ `cat rpms.in.yaml | yq '.contentOrigin.repofiles.[]' | grep redhat.repo` ];
   SUB=1
 fi
 
-if [ -n "$1" ];then
-  echo "No arguments can be passed to this entrypoint."
-  exit 1
-fi
-
 if [ $SUB ];then
   echo '=== Running subscription manager register ==='
   subscription-manager register --activationkey="$KEY_NAME" --org="$ORG_ID"
