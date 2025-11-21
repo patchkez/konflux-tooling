@@ -46,11 +46,11 @@ for REPOFILE in `cat rpms.in.yaml | yq '.contentOrigin.repofiles.[]'`;do
   REPOFILE_PATH="/etc/yum.repos.d/$(basename ${REPOFILE})"
   if [ ! -f ${REPOFILE_PATH} ]; then
     echo "File ${REPOFILE} specified in rpms.in.yaml, but not found in /etc/yum.repos.d/"
-  exit 1
-  else
-  echo "=== Copying repofile ${REPOFILE} ==="
-    cp ${REPOFILE_PATH} .
+    exit 1
   fi
+
+  echo "=== Copying repofile ${REPOFILE} ==="
+  cp ${REPOFILE_PATH} .
 
 done
 
