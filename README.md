@@ -1,28 +1,33 @@
 # Konflux tools for managing repositories with konflux pipelines/hermetic builds
-## Generate rpms.lock.yaml
+
+This tool is used to generate a `rpms.lock.yaml` file for a given baseimage.
+It requires the `rpms.in.yaml` file to be present in the format as described in the [Konflux documentation](https://konflux-ci.dev/docs/building/prefetching-dependencies/#rpm).
+
+## Usage
+
+```
+podman run -it --rm -e KEY_NAME="activation-key-name" -e ORG_ID="org-id" -v $(pwd):/app/:Z quay.io/patchkez101/konflux-tooling:latest [image-base]
+```
+
+By default, the tool will use the image `registry.access.redhat.com/ubi9/ubi-minimal:latest` if no image is provided.
+
+Example:
+```
+podman run -it --rm -e KEY_NAME="activation-key-name" -e ORG_ID="org-id" -v $(pwd):/app/:Z quay.io/patchkez101/konflux-tooling:latest
+```
+
+Note: Watch out for any WARNINGS as they might be related to not enabled repositories.
+
+You may alias this command to a shorter name for convenience:
+```
+alias update-rpmlock='podman run -it --rm -e KEY_NAME="activation-key-name" -e ORG_ID="org-id" -v $(pwd):/app/:Z quay.io/patchkez101/konflux-tooling:latest"
+```
+
+## Building the tool
 Build container image manually:
 ```
 podman build -t quay.io/patchkez101/konflux-tooling:latest -f Containerfile
 ```
-
-Or pull built image from quay:
-```
-podman pull quay.io/patchkez101/konflux-tooling:latest
-```
-
-Change directory to repo you want to manage and export needed variables:
-```
-cd <to dir/repo with rpms.lock.yaml>
-export KEY_NAME=<activation-key-name>
-export ORG_ID=<org-id>
-```
-
-Run container for generation of rpm.lock.yaml:
-```
-podman run --rm -e KEY_NAME -e ORG_ID -v $(pwd):/app/:Z quay.io/patchkez101/konflux-tooling:latest
-```
-
-Note: Watch out for any WARNINGS as they might be related to not enabled repositories.
 
 ## TODO
 - print enabled repos
