@@ -52,6 +52,12 @@ for REPOFILE in `cat rpms.in.yaml | yq '.contentOrigin.repofiles.[]'`;do
   echo "=== Copying repofile ${REPOFILE} ==="
   cp ${REPOFILE_PATH} .
 
+  if [ "$(basename ${REPOFILE})" = "ubi.repo" ]; then
+    # Special handling for ubi.repo file
+    sed -i 's/ubi-9-codeready-builder/codeready-builder-for-ubi-9-$basearch/' "${REPOFILE}"
+    sed -i 's/\[ubi-9/[ubi-9-for-$basearch/' "${REPOFILE}"
+    echo "ubi.repo file processed"
+  fi
 done
 
 echo '=== Running rpm-lockfile-prototype ==='
