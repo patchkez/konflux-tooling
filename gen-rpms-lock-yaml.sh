@@ -2,7 +2,7 @@
 
 set -e
 
-IMAGE="${IMAGE:-registry.access.redhat.com/ubi9/ubi-minimal:latest}"
+IMAGE="${IMAGE:-${1:-registry.access.redhat.com/ubi9/ubi-minimal:latest}}"
 
 if [ ! -f rpms.in.yaml ];then
   echo "rpms.in.yaml file not found!!!"
