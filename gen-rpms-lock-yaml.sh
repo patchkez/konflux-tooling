@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -e
+
 if [ ! -f rpms.in.yaml ];then
   echo "rpms.in.yaml file not found!!!"
   exit 1
