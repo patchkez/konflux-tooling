@@ -2,7 +2,7 @@
 
 set -e
 
-IMAGE="${IMAGE:-${1:-registry.access.redhat.com/ubi9/ubi-minimal:latest}}"
+IMAGE="${IMAGE:-$1}"
 
 if [ ! -f rpms.in.yaml ];then
   echo "rpms.in.yaml file not found!!!"
@@ -56,7 +56,11 @@ for REPOFILE in `cat rpms.in.yaml | yq '.contentOrigin.repofiles.[]'`;do
 done
 
 echo '=== Running rpm-lockfile-prototype ==='
-/usr/local/bin/rpm-lockfile-prototype --outfile=./rpms.lock.yaml ./rpms.in.yaml --image="${IMAGE}"
+if [[ -z "$IMAGE" ]];then
+  /usr/local/bin/rpm-lockfile-prototype --outfile=./rpms.lock.yaml ./rpms.in.yaml
+else
+  /usr/local/bin/rpm-lockfile-prototype --outfile=./rpms.lock.yaml ./rpms.in.yaml --image="${IMAGE}"
+fi
 
 echo '=== replacing sslclientky/sslclientcert with variables for konflux ==='
 for REPOFILE in `ls -1 *.repo`;do
