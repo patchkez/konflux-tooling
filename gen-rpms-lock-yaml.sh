@@ -32,8 +32,8 @@ fi
 
 if [ $SUB ]; then
   echo '=== Enable repositories ==='
-  subscription-manager repos --enable=rhel-9-for-x86_64-appstream-source-rpms
-  subscription-manager repos --enable=rhel-9-for-x86_64-baseos-source-rpms
+  subscription-manager repos --enable=rhel-10-for-x86_64-appstream-source-rpms
+  subscription-manager repos --enable=rhel-10-for-x86_64-baseos-source-rpms
 fi
 
 echo "=== Looping through repo files ==="
@@ -49,8 +49,8 @@ for REPOFILE in `cat rpms.in.yaml | yq '.contentOrigin.repofiles.[]'`;do
 
   if [ "$(basename ${REPOFILE})" = "ubi.repo" ]; then
     # Special handling for ubi.repo file
-    sed -i 's/ubi-9-codeready-builder/codeready-builder-for-ubi-9-$basearch/' "${REPOFILE}"
-    sed -i 's/\[ubi-9/[ubi-9-for-$basearch/' "${REPOFILE}"
+    sed -i 's/ubi-10-codeready-builder/codeready-builder-for-ubi-10-$basearch/' "${REPOFILE}"
+    sed -i 's/\[ubi-10/[ubi-10-for-$basearch/' "${REPOFILE}"
     echo "ubi.repo file processed"
   fi
 done

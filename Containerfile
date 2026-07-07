@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi:latest
+FROM registry.access.redhat.com/ubi10/ubi:latest
 
 RUN dnf install -y python3 python3-pip python3-dnf skopeo rpm git-core && \
     mkdir /opt/bin
