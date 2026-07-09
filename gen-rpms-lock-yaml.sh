@@ -2,7 +2,8 @@
 
 set -e
 
-IMAGE="${IMAGE:-$1}"
+# IMAGE="${IMAGE:-$1}"
+IMAGE="${1:-"registry.access.redhat.com/ubi${UBI_VERSION}/ubi-minimal"}"
 
 if [ ! -f rpms.in.yaml ];then
   echo "rpms.in.yaml file not found!!!"
@@ -32,8 +33,8 @@ fi
 
 if [ $SUB ]; then
   echo '=== Enable repositories ==='
-  subscription-manager repos --enable=rhel-9-for-x86_64-appstream-source-rpms
-  subscription-manager repos --enable=rhel-9-for-x86_64-baseos-source-rpms
+  subscription-manager repos --enable=rhel-${UBI_VERSION}-for-x86_64-appstream-source-rpms
+  subscription-manager repos --enable=rhel-${UBI_VERSION}-for-x86_64-baseos-source-rpms
 fi
 
 echo "=== Looping through repo files ==="
@@ -49,18 +50,14 @@ for REPOFILE in `cat rpms.in.yaml | yq '.contentOrigin.repofiles.[]'`;do
 
   if [ "$(basename ${REPOFILE})" = "ubi.repo" ]; then
     # Special handling for ubi.repo file
-    sed -i 's/ubi-9-codeready-builder/codeready-builder-for-ubi-9-$basearch/' "${REPOFILE}"
-    sed -i 's/\[ubi-9/[ubi-9-for-$basearch/' "${REPOFILE}"
+    sed -i "s/ubi-${UBI_VERSION}-codeready-builder/codeready-builder-for-ubi-${UBI_VERSION}-\$basearch/" "${REPOFILE}"
+    sed -i "s/\[ubi-${UBI_VERSION}/[ubi-${UBI_VERSION}-for-\$basearch/" "${REPOFILE}"
     echo "ubi.repo file processed"
   fi
 done
 
 echo '=== Running rpm-lockfile-prototype ==='
-if [[ -z "$IMAGE" ]];then
-  /usr/local/bin/rpm-lockfile-prototype --outfile=./rpms.lock.yaml ./rpms.in.yaml
-else
-  /usr/local/bin/rpm-lockfile-prototype --outfile=./rpms.lock.yaml ./rpms.in.yaml --image="${IMAGE}"
-fi
+/usr/local/bin/rpm-lockfile-prototype --outfile=./rpms.lock.yaml ./rpms.in.yaml --image="${IMAGE}"
 
 echo '=== replacing sslclientky/sslclientcert with variables for konflux ==='
 for REPOFILE in `ls -1 *.repo`;do
