@@ -33,8 +33,8 @@ fi
 
 if [ $SUB ]; then
   echo '=== Enable repositories ==='
-  subscription-manager repos --enable=rhel-${UBI_VERSION}-for-x86_64-appstream-source-rpms
-  subscription-manager repos --enable=rhel-${UBI_VERSION}-for-x86_64-baseos-source-rpms
+  subscription-manager repos --enable=rhel-${UBI_VERSION}-for-x86_64-appstream-source-rpms \
+                             --enable=rhel-${UBI_VERSION}-for-x86_64-baseos-source-rpms
 fi
 
 echo "=== Looping through repo files ==="
