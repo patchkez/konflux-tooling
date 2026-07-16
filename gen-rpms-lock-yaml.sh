@@ -46,7 +46,7 @@ for REPOFILE in `cat rpms.in.yaml | yq '.contentOrigin.repofiles.[]'`;do
   fi
 
   echo "=== Copying repofile ${REPOFILE} ==="
-  cp ${REPOFILE_PATH} .
+  cp "${REPOFILE_PATH}" "${REPOFILE}"
 
   if [ "$(basename ${REPOFILE})" = "ubi.repo" ]; then
     # Special handling for ubi.repo file
