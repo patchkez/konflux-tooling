@@ -5,6 +5,9 @@ on:
       - main
 jobs:
   build:
+    strategy:
+      matrix:
+        ubi_version: [9, 10]
     env:
       image_name: konflux-tooling
       repository: 'quay.io/${{ secrets.REGISTRY_REPOSITORY }}/${image_name}'
@@ -16,9 +19,10 @@ jobs:
         id: image_tags
         run: |
           echo -n ::set-output name=IMAGE_TAGS::
-            TAGS=("${{ env.repository }}:latest")
-            TAGS+=("${{ env.repository }}:${GITHUB_SHA}")
-            TAGS+=("${{ env.repository }}:${GITHUB_SHA:0:7}")
+            UBI_VERSION=${{ matrix.ubi_version }}
+            TAGS=("${{ env.repository }}:ubi${UBI_VERSION}-latest")
+            TAGS+=("${{ env.repository }}:ubi${UBI_VERSION}-${GITHUB_SHA}")
+            TAGS+=("${{ env.repository }}:ubi${UBI_VERSION}-${GITHUB_SHA:0:7}")
           ( IFS=$','; echo "${TAGS[*]}" )
 
       - name: Login to Quay.io
@@ -35,3 +39,5 @@ jobs:
           file: Containerfile
           push: true
           tags: "${{ steps.image_tags.outputs.IMAGE_TAGS }}"
+          build-args: |
+            UBI_VERSION=${{ matrix.ubi_version }}
